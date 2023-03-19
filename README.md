@@ -1,1 +1,3 @@
 # marketing-project
+
+Group members:
