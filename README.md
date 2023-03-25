@@ -39,4 +39,6 @@ Then open your browser and go to http://localhost:????. You will see a form wher
 ## Project Information
 This project was done by students from the American University of Armenia (AUA), and the project owners are Maria Miskaryan, Hrayr Muradyan, Narine Marutyan and Zaruhi Poghosyan.
 
+ClickUp: [link](https://app.clickup.com/9007102928/v/li/900701227902)
+
 © 2023 by AdSmart. This project is open source and free for personal and educational use. If you want to use this project for commercial purposes, please contact the project owners for permission.
