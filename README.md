@@ -35,6 +35,10 @@ streamlit run app.py
 ```
 Then open your browser and go to http://localhost:????. You will see a form where you can enter your keywords and other parameters. After clicking the generate button, you will see a list of advertisement prompts.
 
+How is the website going to look like? Rough mockup of the website: [link](https://zaruhipoghosyan01.wixsite.com/adsmart)
+
+The input page can be found in the `General` section that can be found on the right corner of the `Home` introductory page.
+
 
 ## Project Information
 This project was done by students from the American University of Armenia (AUA), and the project owners are Maria Miskaryan, Hrayr Muradyan, Narine Marutyan and Zaruhi Poghosyan.
