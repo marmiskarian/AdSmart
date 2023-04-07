@@ -19,7 +19,6 @@ To install AdSmart, clone this repository and run the following command:
 pip install -r requirements.txt
 ```
 
-
 ### *Running the script*
 To run the main script, use the following command:
 ```
@@ -35,7 +34,7 @@ streamlit run app.py
 ```
 Then open your browser and go to http://localhost:????. You will see a form where you can enter your keywords and other parameters. After clicking the generate button, you will see a list of advertisement prompts.
 
-How is the website going to look like? Rough mockup of the website: [link](https://zaruhipoghosyan01.wixsite.com/adsmart)
+*How is the website going to look like?* Rough mockup of the website: [link](https://zaruhipoghosyan01.wixsite.com/adsmart)
 
 The input page can be found in the `General` section that can be found on the right corner of the `Home` introductory page.
 
