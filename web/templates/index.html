@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up Signin Form Template Example</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="../static/style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<html lang="en">
+<head>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  </head>
+
+<body>
+
+<div id="form">
+  <div class="container">
+    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-md-8 col-md-offset-2">
+      <div id="userform">
+        <div class="tab-content">
+          <div class="tab-pane fade active in" id="signup">
+            <h2 class="text-uppercase text-center">Advertisement Generator</h2>
+            <form id="signup" action="/" method="POST">
+              <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    <label><span class="req"></span> </label>
+                    <input type="text" class="form-control" id="product" name="product" required data-validation-required-message="Please enter the product name." autocomplete="off" placeholder="Product Name*">
+                    <p class="help-block text-danger"></p>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    <label><span class="req"></span> </label>
+                    <input type="text" class="form-control" id="organization" name="organization" required data-validation-required-message="Please enter the organization name." autocomplete="off" placeholder="Organization Name*">
+                    <p class="help-block text-danger"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label><span class="req"></span> </label>
+                <input type="text" class="form-control" id="keywords" name="keywords" required data-validation-required-message="Please enter some keywords." autocomplete="off" placeholder="Keywords*">
+                <p class="help-block text-danger"></p>
+              </div>
+              <div class="generate mrgn-30-top">
+                <button type="submit" class="btn btn-larger btn-block" id='generate'>
+                Generate
+                </button>
+              </div>
+            </form>
+            <form action="/submit" method="POST" id="submission" autocomplete="off">
+              <br>
+              {% for index, input in inputs %}
+                <input type="radio" id="prompt" name="selected_input" value="{{ index }}">
+                <label for="{{ input }}">{{ input }}</label>
+              {% endfor %}
+              <br>
+
+              <input type="submit" class="btn btn-larger btn-block" value="Submit" id="submit-btn">
+            </form>
+          
+      </div>
+    </div>
+  </div>
+  <!-- /.container --> 
+</div>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+</body>
+<!-- partial -->
+  <script src="../static/script.js"></script>
+</body>
+</html>
