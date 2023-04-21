@@ -2,8 +2,9 @@ import openai
 import random
 
 # Set up the OpenAI API credentials
-openai.api_key = "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"
+openai.api_key = "YOUR-OPENAI-API-KEY"
 
+# List of tones appropriate for advertisements
 all_tones = ["persuasive", "excited", "informative", "authoritative", "urgent"]
 
 # Function to generate advertisement prompts
@@ -50,7 +51,3 @@ def generate_advertisement(product_service_name, keywords, tone, length="medium"
         prompts.append(prompt_choices)
 
     return prompts
-
-
-
-
