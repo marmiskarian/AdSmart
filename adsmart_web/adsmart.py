@@ -1,9 +1,8 @@
 import random
-
 import openai
 
 # Set up the OpenAI API credentials
-openai.api_key = "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"
+openai.api_key = "YOUR-OPENAI-API-KEY" 
 
 
 # Function to generate advertisement prompts
