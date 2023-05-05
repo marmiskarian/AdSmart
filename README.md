@@ -9,7 +9,7 @@ AdSmart takes as an input your `product/service information`, a list of `keyword
 
 
 ## How to use it
-To use AdSmart, you need to install the required dependencies and run the main script. You can also use the web interface to interact with the project.
+To use AdSmart, you need to install the required dependencies and run the main script. You can also use the web interface to interact with the project. (The website will be deployed soon.)
 
 
 ### *Installation*
@@ -22,9 +22,9 @@ pip install -r requirements.txt
 ### *Web interface*
 Open your browser and go to http://localhost:????. You will see a form where you can enter your keywords and other parameters. After clicking the generate button, you will see a list of advertisement prompts.
 
-*How is the website going to look like?* Rough mockup of the website: [link](https://zaruhipoghosyan01.wixsite.com/adsmart)
+*How is the website going to look like?* Rough mockup of the website: [link](https://zaruhipoghosyan01.wixsite.com/adsmart) (The style of the website has been updated.)
 
-The html and css files of the web application can be found in the web folder.
+The html and css files of the web application can be found in the adsmart_web folder.
 
 
 ## Project Information
