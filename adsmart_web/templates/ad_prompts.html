@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Advertisement Prompts
+{% endblock %}
+
+{% block content %}
+	<br>
+	<nav class="navbar navbar-expand-lg">
+		<div class="container-fluid">
+			<h3 id="adsmart-nav-title"><b>AdSmart</b></h3>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 active" onclick="window.location.href='/'" id="navlink" type="button"><b>Home</b></button>
+					</li>
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 active" onclick="window.location.href='{{url_for('features')}}'" id="navlink" type="button"><b>Features</b></button>
+					</li>
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 active" onclick="window.location.href='{{url_for('about')}}'" id="navlink" type="button"><b>About</b></button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<br>
+	<br>
+	<div class="position-absolute top-50 start-50 translate-middle card center" style="border-radius: 15px;">
+		<div class="card-body p-5">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card-body" style="background-color: white; height: 452px; border-radius: 15px;">
+						<h4 class="card-title" style="text-align: center;">Generated Ad 1</h4>
+						<div class="overflow-auto">
+    						<textarea class="form-control" rows="13">{{data["gen_prompts"][0]}}</textarea>
+						</div>
+    					<a href="/take_prompt/0" class="btn btn-primary rounded-pill" id="btn-take">Take</a>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card-body" style="background-color: white; height: 452px; border-radius: 15px;">
+						<h4 class="card-title" style="text-align: center;">Generated Ad 2</h4>
+						<div class="overflow-auto">
+    						<textarea class="form-control" rows="13">{{data["gen_prompts"][1]}}</textarea>
+						</div>
+    					<a href="/take_prompt/1" class="btn btn-primary rounded-pill" id="btn-take">Take</a>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card-body" style="background-color: white; height: 452px; border-radius: 15px;">
+						<h4 class="card-title" style="text-align: center;">Generated Ad 3</h4>
+						<div class="overflow-auto">
+    						<textarea class="form-control" rows="13">{{data["gen_prompts"][2]}}</textarea>
+						</div>
+    					<a href="/take_prompt/2" class="btn btn-primary rounded-pill" id="btn-take">Take</a>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="d-flex justify-content-center">
+				<input class="btn rounded-pill" id="start" type="submit" value="Regenerate" style="height: 60px; width: 160px; font-size: 25px; background-color: #006400;" onclick="window.location.href='{{url_for('ad_prompts', name=data['name'], orga=data['orga'], kw=data['kw'], length=data['length'])}}'">
+			</div> 
+		</div>
+	</div>
+{% endblock %}

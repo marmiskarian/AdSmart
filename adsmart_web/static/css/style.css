@@ -1,0 +1,109 @@
+body {
+  background-image: url('/static/images/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+h1 {
+	font-size: 80px; 
+	color: white; 
+	text-shadow: 2px 2px 15px black; 
+	opacity: 0.8;
+}
+
+h3 {
+	color: white; 
+	text-shadow: 2px 2px 15px black; 
+	opacity: 0.8;
+}
+
+#start {
+	height: 105px;
+	width: 200px;
+	font-size: 30px; 
+	background-color: #12271E;
+	color: white;
+	opacity: 0.8;
+}
+
+#start:hover {
+	font-size: 31px; 
+	opacity: 0.95;			
+}
+
+#navlink {
+	color: #0C243C; 
+	font-size: 20px; 
+	opacity: 0.5;	
+	height: 43px;
+	width: 113px;
+}
+
+#navlink_cur {
+	color: #0C243C; 
+	font-size: 20px; 
+	opacity: 0.75;		
+	height: 43px;
+	width: 113px;
+}
+
+#navlink:hover {
+	font-size: 21px;
+	opacity: 0.85;	
+
+}
+
+#navlink_cur:hover {
+	font-size: 21px;
+	opacity: 0.85;	
+
+}
+
+.center {
+	margin: auto;
+	width: 70%;
+	height: 600px;
+	background-color: whitesmoke;
+	opacity: 0.75;
+}
+
+#btn-take {
+	margin-top: 3.5%; 
+	margin-left: 37%; 
+	font-size: 22px;
+	width: 90px;
+}
+
+#adsmart-nav-title {
+	margin-top: 0.75%;
+	font-size: 20px; 
+	color: white; 
+	text-shadow: 2px 2px 15px black; 
+	opacity: 0.8; 
+	margin-left:15px;
+}
+
+#dash-title {
+			margin-top: 0.75%;
+			font-size: 60px; 
+			color: white; 
+			text-shadow: 2px 2px 15px black; 
+			opacity: 0.8; 
+			margin-right: 40.5%;
+		}
+
+
+#admin-login {
+	margin: auto;
+	width: 30%;
+	height: 50%;
+	background-color: whitesmoke;
+	opacity: 0.75;
+}
+
+#card-stat{
+	margin-left: 1%; 
+	border-radius: 10%; 
+	height: 100%; 
+	width: 48%;
+}

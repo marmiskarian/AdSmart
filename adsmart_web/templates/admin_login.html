@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Admin Login
+{% endblock %}
+
+{% block content %}
+	{% for msg in get_flashed_messages() %}
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			{{ msg }}
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	{% endfor %}
+	<div class="position-absolute top-50 start-50 translate-middle card" id="admin-login" style="border-radius: 15px;">
+		<div class="card-body p-5">
+			<h2 style="text-align: center;">Admin Login</h2>
+			<br>
+			<br>
+			<form method="POST">
+				<div class="form-outline mb-4">
+					<label class="form-label">Enter your name</label>
+					<input name="name" class="form-control form-control-lg" value="{{request.form.name}}"required>
+				</div>
+				<div class="form-outline mb-4">
+					<label class="form-label">Enter your password</label>
+					<input name="password" type="password" class="form-control form-control-lg" value="{{request.form.password}}"required>
+				</div>
+				<br>
+				<div class="d-flex justify-content-center">
+					<input class="btn rounded-pill" id="start" type="submit" value="Login" style="height: 60px; width: 160px; font-size: 25px; background-color: #006400;">
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Final Advertisement
+{% endblock %}
+
+{% block content %}
+	<br>
+	<nav class="navbar navbar-expand-lg">
+		<div class="container-fluid">
+			<h3 id="adsmart-nav-title"><b>AdSmart</b></h3>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 active" onclick="window.location.href='/'" id="navlink" type="button"><b>Home</b></button>
+					</li>
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 active" onclick="window.location.href='{{url_for('features')}}'" id="navlink" type="button"><b>Features</b></button>
+					</li>
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 active" onclick="window.location.href='{{url_for('about')}}'" id="navlink" type="button"><b>About</b></button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<br>
+	<br>
+	<div class="position-absolute top-50 start-50 translate-middle card center" style="border-radius: 15px;">
+		<div class="card-body p-5">
+			<div class="row">
+				<div class="col-lg">
+					<div class="card-body" style="background-color: white; height: 452px; border-radius: 15px;">
+						<h4 class="card-title" style="text-align: center;">Your Advertisement Prompt</h4>
+						<div class="overflow-auto">
+    						<textarea class="form-control" id="prompt" rows="13">{{prompt}}</textarea>
+						</div>
+						<button class="btn btn-primary rounded-pill" id="btn-take" style="margin-top: 0.95%; margin-left: 92%;" onclick="copyClipBoard()"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard-fill" viewBox="0 0 16 20">
+						  <path fill-rule="evenodd" d="M10 1.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1Zm-5 0A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5v1A1.5 1.5 0 0 1 9.5 4h-3A1.5 1.5 0 0 1 5 2.5v-1Zm-2 0h1v1A2.5 2.5 0 0 0 6.5 5h3A2.5 2.5 0 0 0 12 2.5v-1h1a2 2 0 0 1 2 2V14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3.5a2 2 0 0 1 2-2Z"/>
+						</svg></button>
+					</div>
+				</div>
+			</div>
+			<br>
+				<div class="d-flex">
+					<button class="btn rounded-pill" id="start" style="height: 60px; width: 160px; font-size: 25px; background-color: #006400;" onclick="window.location.href='/'"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 20 20"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+					</svg> Go Home</button>
+				</div> 
+		</div>
+	</div>
+	<script>
+		function copyClipBoard() {
+			// Get the text field
+			var copyText = document.getElementById("prompt");
+
+			// Select the text field
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); // For mobile devices
+
+			// Copy the text inside the text field
+			navigator.clipboard.writeText(copyText.value);
+			var copyBtn = document.getElementById("btn-take");
+
+			copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 20"><path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/></svg>';
+		}
+	</script>
+{% endblock %}

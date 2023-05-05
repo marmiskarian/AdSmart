@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Features
+{% endblock %}
+
+{% block content %}
+	<br>
+	<nav class="navbar navbar-expand-lg">
+		<div class="container-fluid">
+			<h3 id="adsmart-nav-title"><b>AdSmart</b></h3>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 active" onclick="window.location.href='/'" id="navlink" type="button"><b>Home</b></button>
+					</li>
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 active" onclick="window.location.href='{{url_for('features')}}'" id="navlink_cur" type="button"><b>Features</b></button>
+					</li>
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 active" onclick="window.location.href='{{url_for('about')}}'" id="navlink" type="button"><b>About</b></button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<br>
+	<br>
+	<div class="position-absolute top-50 start-50 translate-middle card center" style="border-radius: 15px;">
+		<div class="card-body p-5">
+			<h2 style="text-align: center;">Features</h2>
+			<br>
+			<div class="row">
+				<div class="col-md-3">
+					<h5 style="text-align:center;">Keywords</h5>
+					<p>Keywords are words or phrases that advertisers input into an algorithm to create more personalized and targeted advertisements. These keywords can include expressions and numbers that can be used to tailor the advertisements to the specific needs and interests of the target audience.</p>
+				</div>
+				<div class="col-md-3">
+					<h5 style="text-align:center;">LLMs</h5>
+					<p>LLMs are used to generate personalized and engaging content that captures the attention of potential customers. By using LLMs, advertisers can create advertisements that are more compelling and effective, as they are based on data-driven insights and tailored to the preferences and interests of the target audience.</p>
+				</div>
+				<div class="col-md-3">
+					<h5 style="text-align:center;">Tones</h5>
+					<p>Tones are an essential component of advertisement prompts, as they help to create an emotional connection with the target audience. Advertisers can use different tones, such as excitement, humor, or urgency, to create a sense of interest and engagement in the target audience.</p>
+				</div>
+				<div class="col-md-3">
+					<h5 style="text-align:center;">Length</h5>
+					<p>Length is another critical factor to consider when creating advertisement prompts. Depending on the platform and the target audience, advertisers may want to create advertisements that are short, medium, or long. Short advertisements are typically used on platforms such as social media. Medium advertisements are often used on websites or in email marketing campaigns. Long advertisements are typically used in television or print ads.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
