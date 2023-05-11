@@ -5,6 +5,46 @@
 {% endblock %}
 
 {% block content %}
+	<style type="text/css">
+		.rate {
+			float: left;
+			height: 46px;
+			padding: 0 10px;
+		}
+
+		.rate:not(:checked)>input {
+			position: absolute;
+			top: -9999px;
+		}
+
+		.rate:not(:checked)>label {
+			float: right;
+			width: 1em;
+			overflow: hidden;
+			white-space: nowrap;
+			cursor: pointer;
+			font-size: 30px;
+			color: #ccc;
+		}
+
+		.rate:not(:checked)>label:before {
+			content: '★ ';
+		}
+
+		.rate>input:checked~label,
+		.rate:not(:checked)>label:hover,
+		.rate:not(:checked)>label:hover~label {
+			color: #ffc700;
+		}
+
+		.rate>input:checked+label:hover,
+		.rate>input:checked+label:hover~label,
+		.rate>input:checked~label:hover,
+		.rate>input:checked~label:hover~label,
+		.rate>label:hover~input:checked~label {
+			color: #c59b08;
+		}
+	</style>
 	<br>
 	<nav class="navbar navbar-expand-lg">
 		<div class="container-fluid">
@@ -34,17 +74,28 @@
 						<h4 class="card-title" style="text-align: center;">Your Advertisement Prompt</h4>
 						<div class="overflow-auto">
     						<textarea class="form-control" id="prompt" rows="13">{{prompt}}</textarea>
-						</div>
-						<button class="btn btn-primary rounded-pill" id="btn-take" style="margin-top: 0.95%; margin-left: 92%;" onclick="copyClipBoard()"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard-fill" viewBox="0 0 16 20">
-						  <path fill-rule="evenodd" d="M10 1.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1Zm-5 0A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5v1A1.5 1.5 0 0 1 9.5 4h-3A1.5 1.5 0 0 1 5 2.5v-1Zm-2 0h1v1A2.5 2.5 0 0 0 6.5 5h3A2.5 2.5 0 0 0 12 2.5v-1h1a2 2 0 0 1 2 2V14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3.5a2 2 0 0 1 2-2Z"/>
-						</svg></button>
+						</div>  
+						<form method="POST" action="{{url_for('final_page')}}">
+							<div class="rate">
+							    <input type="radio" id="star1" name="rate" value="1" {% if rate == 1 %}checked{% endif %} onclick="this.form.submit()"/>
+							    <label for="star1" title="text">1 star</label>
+							    <input type="radio" id="star2" name="rate" value="2" {% if rate == 2 %}checked{% endif %} onclick="this.form.submit()"/>
+							    <label for="star2" title="text">2 stars</label>
+							    <input type="radio" id="star3" name="rate" value="3" {% if rate == 3 %}checked{% endif %} onclick="this.form.submit()"/>
+							    <label for="star3" title="text">3 stars</label>
+							    <input type="radio" id="star4" name="rate" value="4" {% if rate == 4 %}checked{% endif %} onclick="this.form.submit()"/>
+							    <label for="star4" title="text">4 stars</label>
+							    <input type="radio" id="star5" name="rate" value="5" {% if rate == 5 %}checked{% endif %} onclick="this.form.submit()"/>
+							    <label for="star5" title="text">5 stars</label>
+					  		</div>
+								<button class="btn btn-primary rounded-pill" id="btn-take" style="margin-left: 90%; margin-top:5.5%;" onclick="copyClipBoard()"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard-fill" viewBox="0 0 16 20"><path fill-rule="evenodd" d="M10 1.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1Zm-5 0A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5v1A1.5 1.5 0 0 1 9.5 4h-3A1.5 1.5 0 0 1 5 2.5v-1Zm-2 0h1v1A2.5 2.5 0 0 0 6.5 5h3A2.5 2.5 0 0 0 12 2.5v-1h1a2 2 0 0 1 2 2V14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3.5a2 2 0 0 1 2-2Z"/></svg></button>
+						</form>
 					</div>
 				</div>
 			</div>
 			<br>
 				<div class="d-flex">
-					<button class="btn rounded-pill" id="start" style="height: 60px; width: 160px; font-size: 25px; background-color: #006400;" onclick="window.location.href='/'"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 20 20"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-					</svg> Go Home</button>
+					<button class="btn rounded-pill" id="start" style="height: 60px; width: 160px; font-size: 25px; background-color: #006400;" onclick="window.location.href='/'"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 20 20"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/></svg> Go Home</button>
 				</div> 
 		</div>
 	</div>
