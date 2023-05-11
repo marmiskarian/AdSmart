@@ -30,6 +30,7 @@ class Prompts(db.Model):
     rating = db.Column(db.Integer, default=0)
 
     def show_info(self):
+        """Prints the attributes of a Prompts instance."""
         print(
             f"""
             ID: {self.uID}, 
@@ -45,6 +46,7 @@ class Prompts(db.Model):
 
 
 def show_db():
+    """Prints the information of all prompts in the database."""
     print("-" * 100)
 
     # Retrieve all instances of the User model
@@ -60,6 +62,7 @@ def show_db():
 @app.route("/")
 @app.route("/home")
 def home():
+    """Renders the home page template."""
     global GENERATED_DATA
     GENERATED_DATA = {}
 
@@ -68,16 +71,19 @@ def home():
 
 @app.route("/features")
 def features():
+    """Renders the features page template."""
     return render_template("features.html")
 
 
 @app.route("/about")
 def about():
+    """Renders the about page template."""
     return render_template("about.html")
 
 
 @app.route("/form", methods=["GET", "POST"])
 def form():
+    """Handles the form submission and redirects to ad_prompts page."""
     if request.method == "POST":
         name = request.form["name"].replace("/", "")
         orga = request.form["orga"].replace("/", "")
@@ -100,6 +106,7 @@ def form():
 
 @app.route("/ad_prompts/<name>/<orga>/<kw>/<length>")
 def ad_prompts(name, orga, kw, length):
+    """Generates advertisement prompts based on user input and renders the ad_prompts page."""
     global GENERATED_DATA
 
     gen_prompts, tones = generate_advertisement(name, kw, length, orga)
@@ -117,6 +124,7 @@ def ad_prompts(name, orga, kw, length):
 
 @app.route("/take_prompt/<int:index>")
 def take_prompt(index):
+    """Adds a new prompt to the database and redirects to the final_page."""
     gen_prompt = GENERATED_DATA["gen_prompts"][index]
     GENERATED_DATA["gen_prompt"] = gen_prompt
     
@@ -137,6 +145,7 @@ def take_prompt(index):
 
 @app.route("/final_page", methods=["GET", "POST"])
 def final_page():
+    """Renders the final_page template and handles the rating submission."""
     if request.method == "POST":
         rating = int(request.form['rate'])
         promopt = Prompts.query.filter_by(gen_prompt=GENERATED_DATA["gen_prompt"]).first()
@@ -150,6 +159,7 @@ def final_page():
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
+    """Renders the admin_login page and handles the login process."""
     if request.method == "POST":
         name = request.form["name"]
         password = request.form["password"]
@@ -164,6 +174,7 @@ def admin():
 
 @app.route("/admin/dashboard")
 def dashboard():
+    """Renders the dashboard page with statistical information."""
     global ax
     # TODO: optimize this part, it's too long
     used_kws = {}
