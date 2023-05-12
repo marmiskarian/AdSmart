@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app &mdash; AdSmart 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            AdSmart
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AdSmart</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">app</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for app</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">flash</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_for</span>
+<span class="kn">from</span> <span class="nn">flask_sqlalchemy</span> <span class="kn">import</span> <span class="n">SQLAlchemy</span>
+
+<span class="kn">from</span> <span class="nn">adsmart</span> <span class="kn">import</span> <span class="n">generate_advertisement</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">GENERATED_DATA</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="s2">&quot;adsmart&quot;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;SQLALCHEMY_DATABASE_URI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sqlite:///&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
+    <span class="s2">&quot;database/prompts.db&quot;</span>
+<span class="p">)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Prompts"><a class="viewcode-back" href="../app.html#app.Prompts">[docs]</a><span class="k">class</span> <span class="nc">Prompts</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A model representing writing prompts in a database.</span>
+
+<span class="sd">    :param uID: The unique identifier for each prompt.</span>
+<span class="sd">    :type uID: int</span>
+<span class="sd">    :param name: The name of the prompt.</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param orga: The organization associated with the prompt.</span>
+<span class="sd">    :type orga: str</span>
+<span class="sd">    :param kw: The keywords associated with the prompt.</span>
+<span class="sd">    :type kw: str</span>
+<span class="sd">    :param length: The desired length of the written piece.</span>
+<span class="sd">    :type length: str</span>
+<span class="sd">    :param tone: The desired tone of the written piece.</span>
+<span class="sd">    :type tone: str</span>
+<span class="sd">    :param gen_prompt: The actual writing prompt.</span>
+<span class="sd">    :type gen_prompt: str</span>
+<span class="sd">    :param rating: The average rating for the prompt, default is 0. </span>
+<span class="sd">    :type rating: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">uID</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+    <span class="n">orga</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+    <span class="n">kw</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">200</span><span class="p">))</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+    <span class="n">tone</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+    <span class="n">gen_prompt</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">200</span><span class="p">))</span>
+    <span class="n">rating</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Prompts.show_info"><a class="viewcode-back" href="../app.html#app.Prompts.show_info">[docs]</a>    <span class="k">def</span> <span class="nf">show_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints the attributes of a Prompts instance.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            ID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uID</span><span class="si">}</span><span class="s2">, </span>
+<span class="s2">            Name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, </span>
+<span class="s2">            Organization: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">orga</span><span class="si">}</span><span class="s2">, </span>
+<span class="s2">            Key-Words: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="si">}</span><span class="s2">, </span>
+<span class="s2">            Length: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            Tone: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tone</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            Prompt: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gen_prompt</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            Rating: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rating</span><span class="si">}</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="show_db"><a class="viewcode-back" href="../app.html#app.show_db">[docs]</a><span class="k">def</span> <span class="nf">show_db</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prints the information of all prompts in the database.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="c1"># Retrieve all instances of the User model</span>
+    <span class="n">all_prompts</span> <span class="o">=</span> <span class="n">Prompts</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="c1"># Loop through the instances and print their attributes</span>
+    <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">all_prompts</span><span class="p">:</span>
+        <span class="n">prompt</span><span class="o">.</span><span class="n">show_info</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="home"><a class="viewcode-back" href="../app.html#app.home">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/home&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">home</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Renders the home page template.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">GENERATED_DATA</span>
+    <span class="n">GENERATED_DATA</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="features"><a class="viewcode-back" href="../app.html#app.features">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/features&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">features</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Renders the features page template.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;features.html&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="about"><a class="viewcode-back" href="../app.html#app.about">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/about&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">about</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Renders the about page template.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;about.html&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="form"><a class="viewcode-back" href="../app.html#app.form">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/form&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">form</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles the form submission and redirects to ad_prompts page.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">orga</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;orga&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">kw</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;kw&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kw</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">):</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Enter your keywords (min 3, max 20)&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;form.html&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">orga</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">orga</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+        <span class="n">length</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;length&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span>
+            <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;ad_prompts&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">orga</span><span class="o">=</span><span class="n">orga</span><span class="p">,</span> <span class="n">kw</span><span class="o">=</span><span class="n">kw</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;form.html&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ad_prompts"><a class="viewcode-back" href="../app.html#app.ad_prompts">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/ad_prompts/&lt;name&gt;/&lt;orga&gt;/&lt;kw&gt;/&lt;length&gt;&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">ad_prompts</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">orga</span><span class="p">,</span> <span class="n">kw</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates advertisement prompts based on user input and renders the ad_prompts page.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">GENERATED_DATA</span>
+
+    <span class="n">gen_prompts</span><span class="p">,</span> <span class="n">tones</span> <span class="o">=</span> <span class="n">generate_advertisement</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">kw</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">orga</span><span class="p">)</span>
+    <span class="n">GENERATED_DATA</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;orga&quot;</span><span class="p">:</span> <span class="n">orga</span><span class="p">,</span>
+        <span class="s2">&quot;kw&quot;</span><span class="p">:</span> <span class="n">kw</span><span class="p">,</span>
+        <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="n">length</span><span class="p">,</span>
+        <span class="s2">&quot;tones&quot;</span><span class="p">:</span> <span class="n">tones</span><span class="p">,</span>
+        <span class="s2">&quot;gen_prompts&quot;</span><span class="p">:</span> <span class="n">gen_prompts</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;ad_prompts.html&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="take_prompt"><a class="viewcode-back" href="../app.html#app.take_prompt">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/take_prompt/&lt;int:index&gt;&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">take_prompt</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds a new prompt to the database and redirects to the final_page.&quot;&quot;&quot;</span>
+    <span class="n">gen_prompt</span> <span class="o">=</span> <span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;gen_prompts&quot;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+    <span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;gen_prompt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gen_prompt</span>
+    
+    <span class="n">new_prompt</span> <span class="o">=</span> <span class="n">Prompts</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+        <span class="n">orga</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;orga&quot;</span><span class="p">],</span>
+        <span class="n">kw</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;kw&quot;</span><span class="p">],</span>
+        <span class="n">length</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;length&quot;</span><span class="p">],</span>
+        <span class="n">tone</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;tones&quot;</span><span class="p">][</span><span class="n">index</span><span class="p">],</span>
+        <span class="n">gen_prompt</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;gen_prompt&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+
+    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_prompt</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;final_page&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="final_page"><a class="viewcode-back" href="../app.html#app.final_page">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/final_page&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">final_page</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Renders the final_page template and handles the rating submission.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">rating</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">])</span>
+        <span class="n">promopt</span> <span class="o">=</span> <span class="n">Prompts</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">gen_prompt</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;gen_prompt&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">promopt</span><span class="o">.</span><span class="n">rating</span> <span class="o">=</span> <span class="n">rating</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;final_page.html&quot;</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;gen_prompt&quot;</span><span class="p">],</span> <span class="n">rate</span><span class="o">=</span><span class="n">rating</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;final_page.html&quot;</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">GENERATED_DATA</span><span class="p">[</span><span class="s2">&quot;gen_prompt&quot;</span><span class="p">],</span> <span class="n">rate</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="admin"><a class="viewcode-back" href="../app.html#app.admin">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">admin</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Renders the admin_login page and handles the login process.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;admin&quot;</span> <span class="ow">and</span> <span class="n">password</span> <span class="o">==</span> <span class="s2">&quot;admin&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;dashboard&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Unauthorized access!&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;admin_login.html&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;admin_login.html&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dashboard"><a class="viewcode-back" href="../app.html#app.dashboard">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin/dashboard&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dashboard</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Renders the dashboard page with statistical information.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">ax</span>
+    <span class="c1"># TODO: optimize this part, it&#39;s too long</span>
+    <span class="n">used_kws</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">used_lengths</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">kw_lengths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tones</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Persuasive&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Exciting&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Funny&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+    <span class="n">all_prompts</span> <span class="o">=</span> <span class="n">Prompts</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">all_prompts</span><span class="p">:</span>
+        <span class="n">kws</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">kw</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+        <span class="n">kw_lengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kws</span><span class="p">))</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">length</span>
+
+        <span class="k">for</span> <span class="n">kw</span> <span class="ow">in</span> <span class="n">kws</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">kw</span> <span class="ow">in</span> <span class="n">used_kws</span><span class="p">:</span>
+                <span class="n">used_kws</span><span class="p">[</span><span class="n">kw</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">used_kws</span><span class="p">[</span><span class="n">kw</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">length</span> <span class="ow">in</span> <span class="n">used_lengths</span><span class="p">:</span>
+            <span class="n">used_lengths</span><span class="p">[</span><span class="n">length</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">used_lengths</span><span class="p">[</span><span class="n">length</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">tone</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">tone</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+        <span class="n">tones</span><span class="p">[</span><span class="n">tone</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">mean_kw_lengths</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">kw_lengths</span><span class="p">))</span>
+    <span class="n">popular_prompt_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">used_lengths</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">used_lengths</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+    <span class="n">most_common_kw</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">used_kws</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">used_kws</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+    <span class="n">avg_rating</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">prompt</span><span class="o">.</span><span class="n">rating</span> <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">Prompts</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="k">if</span> <span class="n">prompt</span><span class="o">.</span><span class="n">rating</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="c1">####</span>
+
+    <span class="n">bar_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Persuasive&quot;</span><span class="p">,</span> <span class="s2">&quot;Exciting&quot;</span><span class="p">,</span> <span class="s2">&quot;Funny&quot;</span><span class="p">]</span>
+    <span class="n">bar_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">tones</span><span class="p">[</span><span class="n">tone</span><span class="p">]</span> <span class="k">for</span> <span class="n">tone</span> <span class="ow">in</span> <span class="n">bar_labels</span><span class="p">]</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bar_labels</span><span class="p">,</span> <span class="n">bar_values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C0&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Count per Tone&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;User Count&quot;</span><span class="p">)</span>
+
+    <span class="n">tones_bar</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">tones_bar</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">)</span>
+    <span class="n">tones_bar</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">tones_bar_base64</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">tones_bar</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+        <span class="s2">&quot;dashboard.html&quot;</span><span class="p">,</span>
+        <span class="n">tones_bar</span><span class="o">=</span><span class="n">tones_bar_base64</span><span class="p">,</span>
+        <span class="n">mean_kw_lengths</span><span class="o">=</span><span class="n">mean_kw_lengths</span><span class="p">,</span>
+        <span class="n">popular_prompt_length</span><span class="o">=</span><span class="n">popular_prompt_length</span><span class="p">,</span>
+        <span class="n">most_common_kw</span><span class="o">=</span><span class="n">most_common_kw</span><span class="p">,</span>
+        <span class="n">avg_rating</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">avg_rating</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">create_all</span><span class="p">()</span>
+        <span class="n">show_db</span><span class="p">()</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Maria Miskaryan, Hrayr Muradyan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app module &mdash; AdSmart 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            AdSmart
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">app module</a><ul>
+<li><a class="reference internal" href="#app.Prompts"><code class="docutils literal notranslate"><span class="pre">Prompts</span></code></a><ul>
+<li><a class="reference internal" href="#app.Prompts.gen_prompt"><code class="docutils literal notranslate"><span class="pre">Prompts.gen_prompt</span></code></a></li>
+<li><a class="reference internal" href="#app.Prompts.kw"><code class="docutils literal notranslate"><span class="pre">Prompts.kw</span></code></a></li>
+<li><a class="reference internal" href="#app.Prompts.length"><code class="docutils literal notranslate"><span class="pre">Prompts.length</span></code></a></li>
+<li><a class="reference internal" href="#app.Prompts.name"><code class="docutils literal notranslate"><span class="pre">Prompts.name</span></code></a></li>
+<li><a class="reference internal" href="#app.Prompts.orga"><code class="docutils literal notranslate"><span class="pre">Prompts.orga</span></code></a></li>
+<li><a class="reference internal" href="#app.Prompts.query"><code class="docutils literal notranslate"><span class="pre">Prompts.query</span></code></a></li>
+<li><a class="reference internal" href="#app.Prompts.rating"><code class="docutils literal notranslate"><span class="pre">Prompts.rating</span></code></a></li>
+<li><a class="reference internal" href="#app.Prompts.show_info"><code class="docutils literal notranslate"><span class="pre">Prompts.show_info()</span></code></a></li>
+<li><a class="reference internal" href="#app.Prompts.tone"><code class="docutils literal notranslate"><span class="pre">Prompts.tone</span></code></a></li>
+<li><a class="reference internal" href="#app.Prompts.uID"><code class="docutils literal notranslate"><span class="pre">Prompts.uID</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#app.about"><code class="docutils literal notranslate"><span class="pre">about()</span></code></a></li>
+<li><a class="reference internal" href="#app.ad_prompts"><code class="docutils literal notranslate"><span class="pre">ad_prompts()</span></code></a></li>
+<li><a class="reference internal" href="#app.admin"><code class="docutils literal notranslate"><span class="pre">admin()</span></code></a></li>
+<li><a class="reference internal" href="#app.dashboard"><code class="docutils literal notranslate"><span class="pre">dashboard()</span></code></a></li>
+<li><a class="reference internal" href="#app.features"><code class="docutils literal notranslate"><span class="pre">features()</span></code></a></li>
+<li><a class="reference internal" href="#app.final_page"><code class="docutils literal notranslate"><span class="pre">final_page()</span></code></a></li>
+<li><a class="reference internal" href="#app.form"><code class="docutils literal notranslate"><span class="pre">form()</span></code></a></li>
+<li><a class="reference internal" href="#app.home"><code class="docutils literal notranslate"><span class="pre">home()</span></code></a></li>
+<li><a class="reference internal" href="#app.show_db"><code class="docutils literal notranslate"><span class="pre">show_db()</span></code></a></li>
+<li><a class="reference internal" href="#app.take_prompt"><code class="docutils literal notranslate"><span class="pre">take_prompt()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AdSmart</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">app module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/app.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-app">
+<span id="app-module"></span><h1>app module<a class="headerlink" href="#module-app" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.Prompts">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">Prompts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#Prompts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.Prompts" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>A model representing writing prompts in a database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uID</strong> (<em>int</em>) – The unique identifier for each prompt.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the prompt.</p></li>
+<li><p><strong>orga</strong> (<em>str</em>) – The organization associated with the prompt.</p></li>
+<li><p><strong>kw</strong> (<em>str</em>) – The keywords associated with the prompt.</p></li>
+<li><p><strong>length</strong> (<em>str</em>) – The desired length of the written piece.</p></li>
+<li><p><strong>tone</strong> (<em>str</em>) – The desired tone of the written piece.</p></li>
+<li><p><strong>gen_prompt</strong> (<em>str</em>) – The actual writing prompt.</p></li>
+<li><p><strong>rating</strong> (<em>int</em>) – The average rating for the prompt, default is 0.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Prompts.gen_prompt">
+<span class="sig-name descname"><span class="pre">gen_prompt</span></span><a class="headerlink" href="#app.Prompts.gen_prompt" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Prompts.kw">
+<span class="sig-name descname"><span class="pre">kw</span></span><a class="headerlink" href="#app.Prompts.kw" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Prompts.length">
+<span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#app.Prompts.length" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Prompts.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#app.Prompts.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Prompts.orga">
+<span class="sig-name descname"><span class="pre">orga</span></span><a class="headerlink" href="#app.Prompts.orga" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Prompts.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#app.Prompts.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Prompts.rating">
+<span class="sig-name descname"><span class="pre">rating</span></span><a class="headerlink" href="#app.Prompts.rating" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.Prompts.show_info">
+<span class="sig-name descname"><span class="pre">show_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#Prompts.show_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.Prompts.show_info" title="Permalink to this definition"></a></dt>
+<dd><p>Prints the attributes of a Prompts instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Prompts.tone">
+<span class="sig-name descname"><span class="pre">tone</span></span><a class="headerlink" href="#app.Prompts.tone" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Prompts.uID">
+<span class="sig-name descname"><span class="pre">uID</span></span><a class="headerlink" href="#app.Prompts.uID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.about">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">about</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#about"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.about" title="Permalink to this definition"></a></dt>
+<dd><p>Renders the about page template.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.ad_prompts">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">ad_prompts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orga</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#ad_prompts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.ad_prompts" title="Permalink to this definition"></a></dt>
+<dd><p>Generates advertisement prompts based on user input and renders the ad_prompts page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.admin">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">admin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#admin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.admin" title="Permalink to this definition"></a></dt>
+<dd><p>Renders the admin_login page and handles the login process.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashboard">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">dashboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#dashboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.dashboard" title="Permalink to this definition"></a></dt>
+<dd><p>Renders the dashboard page with statistical information.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.features">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">features</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.features" title="Permalink to this definition"></a></dt>
+<dd><p>Renders the features page template.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.final_page">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">final_page</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#final_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.final_page" title="Permalink to this definition"></a></dt>
+<dd><p>Renders the final_page template and handles the rating submission.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.form">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">form</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#form"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.form" title="Permalink to this definition"></a></dt>
+<dd><p>Handles the form submission and redirects to ad_prompts page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.home">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.home" title="Permalink to this definition"></a></dt>
+<dd><p>Renders the home page template.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.show_db">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">show_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#show_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.show_db" title="Permalink to this definition"></a></dt>
+<dd><p>Prints the information of all prompts in the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.take_prompt">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">take_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#take_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.take_prompt" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new prompt to the database and redirects to the final_page.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Maria Miskaryan, Hrayr Muradyan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
