@@ -5,13 +5,22 @@
 {% endblock %}
 
 {% block content %}
+	<style type="text/css">
+		#admin-login {
+			margin: auto;
+			height: 55%;
+			background-color: whitesmoke;
+			opacity: 0.75;
+			width: 30%;
+		}
+	</style>
 	{% for msg in get_flashed_messages() %}
 		<div class="alert alert-danger alert-dismissible fade show" role="alert">
 			{{ msg }}
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	{% endfor %}
-	<div class="position-absolute top-50 start-50 translate-middle card" id="admin-login" style="border-radius: 5%; height: 53%;">
+	<div class="position-absolute top-50 start-50 translate-middle card" id="admin-login" style="border-radius: 5%;">
 		<div class="card-body p-5">
 			<h2 style="text-align: center;">Admin Login</h2>
 			<br>
@@ -25,9 +34,8 @@
 					<label class="form-label">Enter your password</label>
 					<input name="password" type="password" class="form-control form-control-lg" value="{{request.form.password}}"required>
 				</div>
-				<br>
 				<div class="d-flex justify-content-center">
-					<input class="btn rounded-pill" id="start" type="submit" value="Login" style="height: 30%; width: 40%; font-size: 25px; background-color: #006400;">
+					<input class="btn rounded-pill" id="start-button" type="submit" value="Login" style="font-size: 160%; width: 36%; background-color: #006400;">
 				</div>
 			</form>
 		</div>

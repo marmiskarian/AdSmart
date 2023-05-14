@@ -10,6 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from adsmart import generate_advertisement
 
 _, ax = plt.subplots()
+ax.set_ylim([0, 100])
 GENERATED_DATA = {}
 app = Flask(__name__)
 app.secret_key = "adsmart"
@@ -117,6 +118,7 @@ def ad_prompts(name, orga, kw, length):
         "length": length,
         "tones": tones,
         "gen_prompts": gen_prompts,
+        "gen_prompt": ""
     }
 
     return render_template("ad_prompts.html", data=GENERATED_DATA)
@@ -125,8 +127,9 @@ def ad_prompts(name, orga, kw, length):
 @app.route("/take_prompt/<int:index>")
 def take_prompt(index):
     """Adds a new prompt to the database and redirects to the final_page."""
-    gen_prompt = GENERATED_DATA["gen_prompts"][index]
-    GENERATED_DATA["gen_prompt"] = gen_prompt
+    if GENERATED_DATA["gen_prompt"] == "":
+        gen_prompt = GENERATED_DATA["gen_prompts"][index]
+        GENERATED_DATA["gen_prompt"] = gen_prompt
     
     new_prompt = Prompts(
         name=GENERATED_DATA["name"],
@@ -146,15 +149,18 @@ def take_prompt(index):
 @app.route("/final_page", methods=["GET", "POST"])
 def final_page():
     """Renders the final_page template and handles the rating submission."""
+    rating = 0
     if request.method == "POST":
-        rating = int(request.form['rate'])
+        if 'rate' in request.form:
+            rating = int(request.form['rate'])
+
         promopt = Prompts.query.filter_by(gen_prompt=GENERATED_DATA["gen_prompt"]).first()
         promopt.rating = rating
         db.session.commit()
 
-        return render_template("final_page.html", prompt=GENERATED_DATA["gen_prompt"], rate=rating)
+        return render_template("final_page.html", prompt=GENERATED_DATA["gen_prompt"], star=rating)
 
-    return render_template("final_page.html", prompt=GENERATED_DATA["gen_prompt"], rate=0)
+    return render_template("final_page.html", prompt=GENERATED_DATA["gen_prompt"], star=rating)
 
 
 @app.route("/admin", methods=["GET", "POST"])
@@ -210,10 +216,13 @@ def dashboard():
 
     bar_labels = ["Persuasive", "Exciting", "Funny"]
     bar_values = [tones[tone] for tone in bar_labels]
-
-    ax.bar(bar_labels, bar_values, color="C0")
-    ax.set_title("Count per Tone", size=14)
+    bar_values_rel = [x/sum(bar_values)*100 for x in bar_values]
+    
+    ax.bar(bar_labels, bar_values_rel, color="C0")
+    ax.set_title("Percentage per Tone", size=14)
     ax.set_ylabel("User Count")
+    for i, num in enumerate(bar_values_rel):
+        ax.text(i, num, f"{np.round(num, 2)}%", ha='center')
 
     tones_bar = io.BytesIO()
     plt.savefig(tones_bar, format="png")
@@ -226,7 +235,7 @@ def dashboard():
         mean_kw_lengths=mean_kw_lengths,
         popular_prompt_length=popular_prompt_length,
         most_common_kw=most_common_kw,
-        avg_rating=avg_rating,
+        avg_rating=np.round(avg_rating, 1),
     )
 
 

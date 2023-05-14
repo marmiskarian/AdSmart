@@ -5,52 +5,63 @@
 {% endblock %}
 
 {% block content %}
+	<style type="text/css">
+		#dash-title {
+			color: white; 
+			opacity: 0.8;
+			margin-left: 35%;
+		}
+
+		#card-stat{
+			border-radius: 10%; 
+			width: 35%;
+		}
+	</style>
 	<br>
-	<nav class="navbar navbar-expand-lg">
-		<div class="container-fluid">
+	<nav class="navbar navbar-expand-lg" style="width: 100%;">
+		<!-- <div class="container-fluid"> -->
 			<h3 id="adsmart-nav-title"><b>AdSmart</b></h3>
-			<h2 id="dash-title" style="margin-left:10%;">Analytics</h2>
-		</div>
+			<h2 id="dash-title">Analytics</h2>
+		<!-- </div> -->
 	</nav>
 	<br>
 	<br>   			
-	<div class="position-absolute top-50 start-50 translate-middle" style="border-radius: 5%; margin: auto; width: 70%; height: 65%;">
+	<div class="position-absolute top-50 start-50 translate-middle" style="border-radius: 5%; width: 82%;">
 		<div class="container-fluid">
-			<div class="row" style="text-align:center; margin-top: 4%;" align="center">
-				<div class="col-md-6" style=" margin-bottom: 5%; opacity: 0.75;">
-					<img src="data:image/png;base64,{{ tones_bar }}" style=" border-radius: 5%; width:100%;">
+			<div class="row" style="text-align:center;">
+				<div class="col-md-6" style="opacity: 0.75; width: 40%;">
+					<img src="data:image/png;base64,{{ tones_bar }}" style="border-radius: 5%;">
 				</div>
-				<div class="col-md-6" style="width: 46%;">
-					<div class="row" style="height:41.5%; opacity: 0.75;">
+				<div class="col-md-6" style="margin-left: 10%;">
+					<div class="row" style="opacity: 0.75; height: 52%;">
 			            <div class="card text-white mb-3" id="card-stat">
 			              <br>
-			              <div class="card-body" style="margin-top:5%;">
-			                <h5 class="card-title" style="color: black;">Average Count of Keywords</h5>
-			                <p class="card-text" style="text-align: center"><span style="color: red; font-size: 250%;">{{mean_kw_lengths}}</span></p>
+			              <div class="card-body">
+			                <h5 class="card-title" style="color: black; font-size: 140%;">Average Count of Keywords</h5>
+			                <p class="card-text" style="text-align: center; margin-top: 15%;"><span style="color: red;">{{mean_kw_lengths}}</span></p>
 			              </div>
 			            </div>
-			            <div class="card text-white mb-3" id="card-stat" style="margin-left: 3%;">
+			            <div class="card text-white mb-3" id="card-stat" style="margin-left: 1%;">
 			              <br>
-			              <div class="card-body" style="margin-top:5%;">
-			                <h5 class="card-title" style="color: black;">Popular Prompt Length</h5>
-			                <p class="card-text" style="text-align: center"><span style="color: red; font-size: 250%; text-align: center">{{popular_prompt_length}}</span></p>
+			              <div class="card-body">
+			                <h5 class="card-title" style="color: black; font-size: 140%">Popular Ad Length</h5>
+			                <p class="card-text" style="text-align: center; margin-top: 15%;"><span style="color: red; text-align: center">{{popular_prompt_length}}</span></p>
 			              </div>
 			            </div>
 					</div>
-					<br>    
-					<div class="row" style="height:41.5%; opacity: 0.75;">
+					<div class="row" style="opacity: 0.75; height: 52%;">
 			            <div class="card text-white mb-3" id="card-stat" >
 			              <br>
-			              <div class="card-body" style="margin-top:5%;">
-			                <h5 class="card-title" style="color: black;">Most Common Keyword</h5>
-			                <p class="card-text" id="most-common" style="text-align: center"><span style="color: red; font-size: 250%;">{{most_common_kw}}</span></p>
+			              <div class="card-body">
+			                <h5 class="card-title" style="color: black; font-size: 140%">Most Common Keyword</h5>
+			                <p class="card-text" id="most-common-kw" style="text-align: center; margin-top: 15%;"><span style="color: red;">{{most_common_kw}}</span></p>
 			              </div>
 			            </div>
-			            <div class="card text-white mb-3" id="card-stat"  style="margin-left: 3%;">
+			            <div class="card text-white mb-3" id="card-stat" style="margin-left: 1%;">
 			              <br>
-			              <div class="card-body" style="margin-top:5%;">
-			                <h5 class="card-title" style="color: black;">Average User Rating</h5>
-			                <p class="card-text" id="least-common" style="text-align: center"><span style="color: red; font-size: 250%; text-align: center">{{avg_rating}}</span></p>
+			              <div class="card-body">
+			                <h5 class="card-title" style="color: black; font-size: 140%">Average User Rating</h5>
+			                <p class="card-text" id="avg-rating" style="text-align: center; margin-top: 15%;"><span style="color: red; text-align: center">{{avg_rating}}</span></p>
 			              </div>
 			            </div>
 					</div>
@@ -59,13 +70,13 @@
 		</div>
 	</div>
 	<script>
-	    var paragraph = document.getElementById("most-common");
+	    var paragraph = document.getElementById("most-common-kw");
 	    var words = paragraph.textContent.split(" ");
 	    if (words.length > 2) {
 	        paragraph.style.fontSize = "80%";
 	    }
 	    
-	    var paragraph = document.getElementById("least-common");
+	    var paragraph = document.getElementById("avg-rating");
 	    var words = paragraph.textContent.split(" ");
 	    if (words.length > 2) {
 	        paragraph.style.fontSize = "80%";
