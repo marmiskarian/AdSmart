@@ -1,4 +1,6 @@
 # AdSmart
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 *Spice up your ads with smart and creative prompts from AdSmart.*
 
 AdSmart is a powerful tool that generates advertisement prompts based on the keywords you provide. With AdSmart, you can easily create targeted and effective advertisements that will help you reach your audience. Whether you need a slogan for your product, a headline for your blog post, or a tagline for your social media campaign, AdSmart can help you find the best words to attract your audience.
